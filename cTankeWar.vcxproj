@@ -79,6 +79,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="colkeymouapi.cpp" />
+    <ClCompile Include="collision.cpp" />
+    <ClCompile Include="linktable.cpp" />
     <ClCompile Include="objinfo.cpp" />
     <ClCompile Include="readmap.cpp" />
     <ClCompile Include="setdisplay.cpp" />
@@ -86,6 +88,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="colkeymouapi.h" />
+    <ClInclude Include="collision.h" />
+    <ClInclude Include="linktable.h" />
     <ClInclude Include="objinfo.h" />
     <ClInclude Include="readmap.h" />
     <ClInclude Include="setdisplay.h" />
