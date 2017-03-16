@@ -2,9 +2,6 @@
 
 // 控制台API接收键盘鼠标输入
 
-extern objInfo *allObj[ MAXOBJ ];
-extern unshort dftMap[ MAXMAPWID ][ MAXMAPWID ];
-
 // 输出调试坐标信息
 void outPutPos(int nX , int nY){
 	char szBuff[ 100 ] = { 0 };
@@ -13,55 +10,44 @@ void outPutPos(int nX , int nY){
 }
 
 // 键盘事件处理函数
-void keyEventProc(KEY_EVENT_RECORD ker){
-	if(ker.bKeyDown && (ker.uChar.AsciiChar == 'W' || ker.uChar.AsciiChar == 'w')){
+void keyEventProc(){
+	if(KEYDOWN('w') || KEYDOWN('W')){
 		WriteChar(45 , 3 , "↑" , 0xFA);
-		objMove(allObj[ 1 ], UP); 
-		echoMap();
+		objMove(allObj[ 1 ] , UP);
+		echoMap(allObj[1]);
 	}
-	else if(ker.uChar.AsciiChar == 'W' || ker.uChar.AsciiChar == 'w'){
-		WriteChar(45 , 3 , "↑" , 0x0A);
-	}
-
-	if(ker.bKeyDown && (ker.uChar.AsciiChar == 'A' || ker.uChar.AsciiChar == 'a')){
-		WriteChar(44 , 4 , "←" , 0xFA);
-		objMove(allObj[ 1 ] , LEFT);
-		echoMap();
-
-	}
-	else if(ker.uChar.AsciiChar == 'A' || ker.uChar.AsciiChar == 'a'){
-		WriteChar(44 , 4 , "←" , 0x0A);
-	}
-
-	if(ker.bKeyDown && (ker.uChar.AsciiChar == 'S' || ker.uChar.AsciiChar == 's')){
+	else if(KEYDOWN('s') || KEYDOWN('S')){
 		WriteChar(45 , 5 , "↓" , 0xFA);
 		objMove(allObj[ 1 ] , DOWN);
-		echoMap();
-
+		echoMap(allObj[ 1 ]);
 	}
-	else if(ker.uChar.AsciiChar == 'S' || ker.uChar.AsciiChar == 's'){
-		WriteChar(45 , 5 , "↓" , 0x0A);
+	else if(KEYDOWN('a') || KEYDOWN('A')){
+		WriteChar(44 , 4 , "←" , 0xFA);
+		objMove(allObj[ 1 ] , LEFT);
+		echoMap(allObj[ 1 ]);
 	}
-
-	if(ker.bKeyDown && (ker.uChar.AsciiChar == 'D' || ker.uChar.AsciiChar == 'd')){
+	else if(KEYDOWN('d') || KEYDOWN('D')){
 		WriteChar(46 , 4 , "→" , 0xFA);
 		objMove(allObj[ 1 ] , RIGHT);
-		echoMap();
-
+		echoMap(allObj[ 1 ]);
 	}
-	else if(ker.uChar.AsciiChar == 'd' || ker.uChar.AsciiChar == 'd'){
-		WriteChar(46 , 4 , "→" , 0x0A);
-	}
-
-	if(ker.bKeyDown && (ker.uChar.AsciiChar == ' '))
+	else if(KEYDOWN('h') || KEYDOWN('H')){
 		WriteChar(45 , 4 , "●" , 0xFA);
-	else if(ker.uChar.AsciiChar == ' '){
-		WriteChar(45 , 4 , "○" , 0x0A);
+		fire(allObj[ 1 ]);
+	}
+	else if(KEYDOWN('m') || KEYDOWN('M')){
+		clrLink(&nLink , NULLARR);
+		clrLink(&dTankLink , LINKOBJ);
+		clrLink(&bulletLink , LINKOBJ);
+		//fflush(stdin); // 清理输入缓冲区
+		exit(0);
 	}
 
-	if(ker.bKeyDown && (ker.uChar.AsciiChar == 'Q' || ker.uChar.AsciiChar == 'q'))
-		exit(0);
-
+	WriteChar(45 , 3 , "↑" , 0x0A);
+	WriteChar(45 , 5 , "↓" , 0x0A);
+	WriteChar(44 , 4 , "←" , 0x0A);
+	WriteChar(46 , 4 , "→" , 0x0A);
+	WriteChar(45 , 4 , "○" , 0x0A);
 }
 
 // 鼠标事件处理函数
@@ -86,19 +72,38 @@ void mouseEventProc(MOUSE_EVENT_RECORD mer){
 void messageLoop(){
 	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
 	INPUT_RECORD stcRecord = { 0 };
-	DWORD dwRead;
-	SetConsoleMode(hStdin , ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT);
+	//DWORD dwRead;
+	SetConsoleMode(hStdin , ENABLE_MOUSE_INPUT);
 
+	WriteChar(41 , 7 , "剩余生命" , 0x0A);
+	char szBuff[ 10 ];
+	sprintf_s(szBuff , 10 , "%2d" , allObj[ 1 ]->Bullft);
+	WriteChar(45 , 7 , szBuff , 0x0A);
+
+	int i = 0;
 	while(1){
+		echoMap();
+
+ 		moveBul();
+// 		if(i > 100){
+// 			i = 0;
+// 			// 自动移动坦克
+// 			moveDtk();
+// 		}
+// 		++i;
+
 		// 等待事件
-		ReadConsoleInput(hStdin , &stcRecord , 1 , &dwRead);
+		//ReadConsoleInput(hStdin , &stcRecord , 1 , &dwRead);
 		// 处理事件
-		if(stcRecord.EventType == KEY_EVENT){
-			// 键盘事件
-			keyEventProc(stcRecord.Event.KeyEvent);
-		}
-		else if(stcRecord.EventType == MOUSE_EVENT){
+		// 键盘事件
+		keyEventProc();
+		if(stcRecord.EventType == MOUSE_EVENT){
 			mouseEventProc(stcRecord.Event.MouseEvent);
 		}
+		if(gameOver > 0){
+			//fflush(stdin); // 清理输入缓冲区
+			return;
+		}
+		Sleep(100);
 	}
 }

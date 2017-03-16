@@ -78,6 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="automove.cpp" />
     <ClCompile Include="colkeymouapi.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="linktable.cpp" />
@@ -87,6 +88,7 @@
     <ClCompile Include="tankeMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="automove.h" />
     <ClInclude Include="colkeymouapi.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="linktable.h" />

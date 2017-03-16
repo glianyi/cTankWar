@@ -28,7 +28,7 @@ objInfo *creatObj(unshort Type , unshort size , unshort Action ,
 				  unshort ltpostX , unshort ltpostY , unshort ID);
 
 // 输出新地图
-void echoMap();
+void echoMap(objInfo *theObj = NULL);
 
 // 对象移动，修改坐标
 void objMove(objInfo *theObj , unshort act = 16);
@@ -37,7 +37,7 @@ void objMove(objInfo *theObj , unshort act = 16);
 void echoTanke(objInfo *tanke);
 
 // 打印子弹
-void echoBullft(objInfo *bullft);
+void echoBullet(objInfo *bullet);
 
 // 打印基地
 void echoHome(objInfo *myHome);

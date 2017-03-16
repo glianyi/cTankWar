@@ -32,7 +32,7 @@ void *delLink(hdLink *head , int wtLink , unshort id){
 
 		// 如果被删除结点位于所有数组所有非空元素之后
 		// 更新头结点信息并返回NULL
-		if(id == head->num - 1){
+		if(id == (head->num) - 1){
 			(head->num) -= 1;
 			return NULL;
 		}
@@ -123,10 +123,21 @@ void echoLink(hdLink head , int wtLink){
 	}
 }
 
+// 获取对象数组空元素下标
+unint getNullObj(hdLink *head){
+	if(head->wtObj.nullNext == NULL)
+		return (head->num)++;
 
+	unint temp = 0;
+	temp = head->wtObj.nullNext->id;
+	delLink(head , NULLARR);
+	return temp;
+}
+
+hdLink testNull;
+hdLink testObj;
 // 链表测试用例
 void testLink(){
-	hdLink testObj , testNull;
 	testObj.num = 0;
 	testObj.wtObj.objNext = NULL;
 	testNull.num = 0;

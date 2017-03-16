@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <stdarg.h>
+#include <math.h>
 
 #define MAXMAPWID 40  // 地图宽度
 #define MAXOBJ    255 // 对象数组大小
@@ -39,15 +40,27 @@ typedef struct coor
 	unshort x , y;
 } coor;
 
-#include "objinfo.h"
-#include "setdisplay.h"
-#include "readmap.h"
-#include "colkeymouapi.h"
-#include "linktable.h"
-#include "collision.h"
+#include "objinfo.h"      // 对象处理
+#include "setdisplay.h"   // 输出设置
+#include "readmap.h"      // 打印地图
+#include "colkeymouapi.h" // 鼠标事件
+#include "linktable.h"    // 链表
+#include "collision.h"    // 碰撞检测
+#include "automove.h"     // 子弹和地方坦克们的自动移动
 
-extern objInfo *allObj[ MAXOBJ ];
-extern unshort beforMap[ MAXMAPWID ][ MAXMAPWID ];
-extern unshort dftMap[ MAXMAPWID ][ MAXMAPWID ];
-extern int tanekLife;
-extern int gameOver;
+extern objInfo *allObj[ MAXOBJ ];  // 对象数组
+
+extern unshort mapA[ MAXMAPWID ][ MAXMAPWID ];
+extern unshort mapB[ MAXMAPWID ][ MAXMAPWID ];
+
+extern unshort (*beforMap)[40]; // 前一个状态地图
+extern unshort (*dftMap)[40];   // 当前地图
+extern int tanekLife; // 坦克新生无敌时间
+extern int gameOver;  // 定义游戏是否结束
+
+extern hdLink testNull; // 链表测试用例中的空元素链表
+extern hdLink testObj;  // 链表测试用例中的对象链表
+
+extern hdLink nLink; // 全局对象数组空元素链表
+extern hdLink dTankLink; // 敌方坦克链表
+extern hdLink bulletLink; // 子弹链表

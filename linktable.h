@@ -37,5 +37,8 @@ void clrLink(hdLink *head , int wtLink);
 // 打印链表
 void echoLink(hdLink head , int wtLink);
 
+// 获取对象数组空元素下标
+unint getNullObj(hdLink *head);
+
 // 链表测试用例
 void testLink();

@@ -7,14 +7,19 @@ void readMap(){
 	WORD mapColor;
 	for(int i = 0; i < MAXMAPWID; i++){
 		for(int j = 0; j < MAXMAPWID; j++){
-// 			if(allObj[ beforMap[ i ][ j ] ] == (objInfo *)0xF000)
-// 				continue; // 被删除的结点
 			if(dftMap[i][j] != 0 || beforMap[i][j] != 0){
+
+				if(beforMap[ i ][ j ] == dftMap[ i ][ j ])
+					continue;
 
 				if(beforMap[ i ][ j ] != 0 && dftMap[ i ][ j ] == 0){
 					WriteChar(j , i , "  " , 0);
 					continue;
 				}
+
+				if(allObj[ dftMap[ i ][ j ] ] == (objInfo *)0xF000)
+					continue;
+
 				mapColor = allObj[ dftMap[ i ][ j ] ]->color;
 				switch(allObj[dftMap[i][j]]->Type)
 				{
@@ -30,5 +35,8 @@ void readMap(){
 			}
 		}
 	}
-	memcpy(beforMap , dftMap , sizeof(dftMap));
+	unshort(*temp)[ 40 ] = dftMap;
+	dftMap = beforMap;
+	beforMap = temp;
+	memset(dftMap , 0 , sizeof(mapA));
 }
