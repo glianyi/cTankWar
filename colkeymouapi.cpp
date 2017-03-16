@@ -85,12 +85,12 @@ void messageLoop(){
 		echoMap();
 
  		moveBul();
-// 		if(i > 100){
-// 			i = 0;
-// 			// 自动移动坦克
-// 			moveDtk();
-// 		}
-// 		++i;
+		if(i > 5){
+			i = 0;
+			// 自动移动坦克
+			moveDtk();
+		}
+		++i;
 
 		// 等待事件
 		//ReadConsoleInput(hStdin , &stcRecord , 1 , &dwRead);
@@ -104,6 +104,6 @@ void messageLoop(){
 			//fflush(stdin); // 清理输入缓冲区
 			return;
 		}
-		Sleep(100);
+		//Sleep(100);
 	}
 }
