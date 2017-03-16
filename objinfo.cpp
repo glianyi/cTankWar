@@ -200,6 +200,7 @@ void echoMap(objInfo *theObj){
 		}
 	}
 	readMap();
+	return;
 }
 
 // 对象移动，修改坐标

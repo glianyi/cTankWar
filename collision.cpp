@@ -40,9 +40,9 @@ bool collision(objInfo *ob , coor crBuff[]){
 
 				if(crTp == ZIDAN){
 					if(tp == DDTANK){
-						(allObj[ crId ]->Type) = DTANK;
-						(allObj[ crId ]->Bullft) -= 1;
-						(allObj[ crId ]->color) = 0x04;
+						(allObj[ ob->ID ]->Type) = DTANK;
+						(allObj[ ob->ID ]->Bullft) -= 1;
+						(allObj[ ob->ID ]->color) = 0x04;
 					}
 					else{
 						delT(&dTankLink , ob->ID);// 删除敌方坦克对象
@@ -141,8 +141,8 @@ bool collision(objInfo *ob , coor crBuff[]){
 void tankeOver(){
 	if((allObj[1]->Bullft) >= 0)
 		(allObj[ 1 ]->Bullft) -= 1;
-	if(allObj[ 1 ]->Bullft <= 0)
-		gameOver += 1;
+// 	if(allObj[ 1 ]->Bullft <= 0)
+// 		gameOver += 1;
 
 	char szBuff[ 10 ];
 	sprintf_s(szBuff , 10 , "%2d" , allObj[ 1 ]->Bullft);
