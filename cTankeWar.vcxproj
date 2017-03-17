@@ -81,6 +81,7 @@
     <ClCompile Include="automove.cpp" />
     <ClCompile Include="colkeymouapi.cpp" />
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="gamestart.cpp" />
     <ClCompile Include="linktable.cpp" />
     <ClCompile Include="objinfo.cpp" />
     <ClCompile Include="readmap.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="readmap.h" />
     <ClInclude Include="setdisplay.h" />
     <ClInclude Include="tanke.h" />
+    <ClInclude Include="gamestart.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -28,7 +28,7 @@ void readMap(){
 						WriteChar(j , i , "¡ö" , mapColor); break;
 					case ZIDAN: case DZIDAN:
 						WriteChar(j , i , "¡ñ" , mapColor); break;
-					case HELIU: case CAODI:
+					case HELIU: case SENLIN:
 						WriteChar(j , i , "£Þ" , mapColor); break;
 					default:
 						break;

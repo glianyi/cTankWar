@@ -2,7 +2,7 @@
 
 int tankLife = 6;
 int gameOver = 0;
-int dTankNum = 10;
+int dTankNum = 20;
 
 // Åö×²¼ì²â
 bool collision(objInfo *ob , coor crBuff[]){
@@ -256,13 +256,7 @@ unshort wtType(coor wObj, unshort *crId){
 void delT(hdLink *theObj , unshort id){
 	if(theObj->wtObj.objNext == NULL)
 		return;
-
-	if(theObj->wtObj.objNext->theObj->Type == DTANK){
-		--dTankNum;
-		char szBuff[ 10 ];
-		sprintf_s(szBuff , 10 , "%2d" , dTankNum);
-		WriteChar(45 , 10 , szBuff , 0x0A);
-	}
+	unshort tp = theObj->wtObj.objNext->theObj->Type;
 
 	delLink(theObj , LINKOBJ , id);
 
@@ -275,4 +269,16 @@ void delT(hdLink *theObj , unshort id){
 	}
 
 	allObj[ id ] = (objInfo *)0xF000;
+
+	if(tp == DTANK){
+		if(dTankNum - 5 > 0){
+			seconds = clock();
+			echoDtank( 2 << (seconds % 2) );
+		}
+		--dTankNum;
+		char szBuff[ 10 ];
+		sprintf_s(szBuff , 10 , "%2d" , dTankNum);
+		WriteChar(45 , 10 , szBuff , 0x0A);
+	}
+
 }

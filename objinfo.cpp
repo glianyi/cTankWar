@@ -55,7 +55,7 @@ objInfo *creatObj(unshort Type , unshort size , unshort Action ,
 			newObj->color = 0x9F;
 			newObj->Bullft = 255;
 			break;
-		case CAODI:
+		case SENLIN:
 			newObj->color = 0x20;
 			newObj->Bullft = 255;
 			break;
@@ -77,6 +77,7 @@ objInfo *creatObj(unshort Type , unshort size , unshort Action ,
 hdLink nLink; // 全局对象数组空元素链表
 hdLink dTankLink; // 敌方坦克链表
 hdLink bulletLink; // 子弹链表
+hdLink senLink; // 森林链表
 
 // 系统初始地图
 unshort mapA[ MAXMAPWID ][ MAXMAPWID ] = { 0 };
@@ -95,6 +96,8 @@ void initDefObj(){
 	dTankLink.wtObj.objNext = NULL;
 	bulletLink.num = 0; // 将此值置为0，防止误用
 	bulletLink.wtObj.objNext = NULL;
+	senLink.num = 0; // 将此值置为0，防止误用
+	senLink.wtObj.objNext = NULL;
 
 
 	// 我的坦克
@@ -129,7 +132,7 @@ void initDefObj(){
 	// 河流
 	allObj[ 11 ] = creatObj(HELIU , 5 , LEFT , 13 , 12 , 11);
 	// 草地
-	allObj[ 12 ] = creatObj(CAODI , 8 , UP , 11 , 8 , 12);
+	allObj[ 12 ] = creatObj(SENLIN , 8 , UP , 11 , 8 , 12);
 	// 子弹
 	allObj[ 13 ] = creatObj(ZIDAN , 1 , UP , 33 , 25 , 13);
 	// 敌军2级坦克
@@ -194,14 +197,32 @@ void echoMap(objInfo *theObj){
 				echoHome(objTemp);
 			case TANK: case DTANK: case DDTANK:
 				echoTanke(objTemp); break;
-			case ZIDAN: case DZIDAN:
-				echoBullet(objTemp); break;
-			case HELIU: case CAODI: case ZWALL: case TWALL:
+ 			case ZIDAN: case DZIDAN:
+ 				echoBullet(objTemp); break;
+			case HELIU: case SENLIN: case ZWALL: case TWALL:
 				echoBuid(objTemp); break;
 			default:
 				break;
 		}
 	}
+
+	// 再更新子弹对象
+// 	objLink *hdTemp = bulletLink.wtObj.objNext;
+// 	while(hdTemp != NULL){
+// 		echoBullet(hdTemp->theObj);
+// 		hdTemp = hdTemp->next;
+// 	}
+
+
+	// 最后更新森林对象
+// 	hdTemp = senLink.wtObj.objNext;
+// 	while(hdTemp != NULL){
+// 		echoBuid(hdTemp->theObj);
+// 		hdTemp = hdTemp->next;
+// 	}
+
+	// 按照以上顺序输出 ： 子弹会在河流上面，草地会在子弹和坦克上面
+
 	readMap();
 	return;
 }
@@ -211,6 +232,7 @@ void objMove(objInfo *theObj , unshort act){
 	if(act == 16)
 		act = theObj->Action;
 
+	unshort id = theObj->ID;
 	unshort tp = theObj->Type;
 	unshort x = theObj->ltposX;
 	unshort y = theObj->ltposY;
@@ -317,6 +339,8 @@ void objMove(objInfo *theObj , unshort act){
 	if(canMove){
 		if(act != theObj->Action)
 			theObj->Action = act;
+	}
+	if(allObj[ id ] != (objInfo *)0xF000 && allObj[ id ] != NULL){
 		switch(tp){
 			case TANK: case DTANK: case DDTANK:
 				echoTanke(theObj); break;

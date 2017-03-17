@@ -187,6 +187,16 @@ void messageLoop(){
 
 	while(1){
 		seconds = clock();
+		if(seconds - tankseconds > 300){
+			tankseconds = seconds;
+			// 坦克无敌时间
+			if(tankLife > 0){
+				allObj[ 1 ]->color = ((allObj[ 1 ]->color) == 0x0A) ? 0x0D : 0x0A;
+				--tankLife;
+			}
+			// 自动移动坦克
+			moveDtk();
+		}
 		if(seconds - bullseconds > 100){
 			bullseconds = seconds;
 
@@ -199,23 +209,19 @@ void messageLoop(){
 			WriteChar(44 , 4 , "←" , 0x0A);
 			WriteChar(46 , 4 , "→" , 0x0A);
 			WriteChar(45 , 4 , "○" , 0x0A);
+			
+			echoMap();
+
+			//echoLink(nLink , NULLARR);
+			//echoLink(bulletLink , LINKOBJ);
+			//echoLink(dTankLink , LINKOBJ);
 		}
-		if(seconds - tankseconds > 300){
-			tankseconds = seconds;
-			// 坦克无敌时间
-			if(tankLife > 0){
-				allObj[ 1 ]->color = ((allObj[ 1 ]->color) == 0x0A) ? 0x0D : 0x0A;
-				--tankLife;
-			}
-			// 自动移动坦克
-			moveDtk();
-		}
+
 
 		WriteChar(41 , 12 , "无敌时间" , 0x0A);
 		sprintf_s(szBuff , 10 , "%2d" , tankLife);
 		WriteChar(45 , 12 , szBuff , 0x0A);
 		keyEventSec();
-		echoMap();
 
 		if(gameOver > 0){
 			//return;

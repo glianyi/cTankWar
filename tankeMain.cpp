@@ -13,6 +13,8 @@ int main(void)
 	
 
 	initDefObj();
+	echoDefaultObj();
+	echoStartDtank();
 	// testLink();// ¡¥±Ì≤‚ ‘
 	echoMap();
 

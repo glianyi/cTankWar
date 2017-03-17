@@ -17,7 +17,8 @@ void moveDtk(){
 	objLink *tempA = NULL;
 	while(temp != NULL){
 		tempA = temp->next;
-		objMove(temp->theObj);
+		seconds = clock();
+		objMove(temp->theObj, 1 << (seconds % 4));
 		temp = tempA;
 	}
 }
@@ -27,7 +28,7 @@ long long fireseconds = 0;// 开火判断条件
 
 // 开炮
 void fire(objInfo *theObj){
-	if(seconds - fireseconds < 1500){
+	if(seconds - fireseconds < 500){
 		return;
 	}
 	else{
@@ -67,4 +68,5 @@ void fire(objInfo *theObj){
 
 	creatLink(&bulletLink , LINKOBJ);
 	bulletLink.wtObj.objNext->theObj = allObj[ id ];
+	echoBullet(allObj[id]);
 }

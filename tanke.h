@@ -11,16 +11,16 @@
 #define MAXOBJ    255 // 对象数组大小
 
 // 宏定义对象类型
-#define JIDI    0
-#define TANK    1
-#define DTANK   2
-#define DDTANK  4
-#define ZIDAN   8
-#define DZIDAN  16
-#define HELIU   24
-#define CAODI   31
-#define ZWALL   32
-#define TWALL   64
+#define JIDI    0  // 基地
+#define TANK    1  // 坦克
+#define DTANK   2  // 敌方坦克
+#define DDTANK  4  // 敌方2级坦克
+#define ZIDAN   8  // 子弹
+#define DZIDAN  16 // 敌方子弹
+#define HELIU   24 // 河流
+#define SENLIN   31 // 森林
+#define ZWALL   32 // 砖墙
+#define TWALL   64 // 铁墙
 
 // 定义移动方向
 #define UP    1
@@ -48,6 +48,7 @@ typedef struct coor
 #include "linktable.h"    // 链表
 #include "collision.h"    // 碰撞检测
 #include "automove.h"     // 子弹和地方坦克们的自动移动
+#include "gamestart.h"    // 提供开始游戏所需对象
 
 extern objInfo *allObj[ MAXOBJ ];  // 对象数组
 

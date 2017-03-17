@@ -30,12 +30,6 @@ void *delLink(hdLink *head , int wtLink , unshort id){
 		head->wtObj.nullNext = temp->next;
 		free(temp);
 
-		// 如果被删除结点位于所有数组所有非空元素之后
-		// 更新头结点信息并返回NULL
-		if(id == (head->num) - 1){
-			(head->num) -= 1;
-			return NULL;
-		}
 
 		return (void *)0XF000;
 	}
@@ -106,7 +100,7 @@ void echoLink(hdLink head , int wtLink){
 
 	// 操作数组空元素链表
 	if(wtLink == NULLARR){
-		WriteChar(1 , 1 , "空元素链表" , 0x0A);
+		WriteChar(1 , 1 , "空元素链表                                                                  " , 0x0A);
 		sprintf_s(szBuff , sizeof(szBuff) , "%4d" , head.num);
 		WriteChar(6 , 1 , szBuff, 0x0F);
 
@@ -119,11 +113,11 @@ void echoLink(hdLink head , int wtLink){
 	}
 
 	// 操作对象链表
-	WriteChar(1 , 2 , "对象链表" , 0x0A);
+	WriteChar(1 , 2 , "对象链表                                                                         " , 0x0A);
 	objLink *temp = head.wtObj.objNext;
 	for(int i = 1; temp != NULL; ++i , temp = temp->next){
 		sprintf_s(szBuff , sizeof(szBuff) , "%4d" , temp->theObj->ID);
-		WriteChar(i * 2 + 4, 2 , szBuff , 0x0A);
+		WriteChar(i * 2 + 4 , 2 , szBuff , 0x0A);
 	}
 }
 
@@ -170,7 +164,7 @@ void testLink(){
 	// 河流
 	allObj[ 11 ] = creatObj(HELIU , 5 , LEFT , 13 , 12 , 11);
 	// 草地
-	allObj[ 12 ] = creatObj(CAODI , 8 , UP , 11 , 8 , 12);
+	allObj[ 12 ] = creatObj(SENLIN , 8 , UP , 11 , 8 , 12);
 	// 子弹
 	allObj[ 13 ] = creatObj(ZIDAN , 1 , UP , 33 , 25 , 13);
 	// 敌军2级坦克
