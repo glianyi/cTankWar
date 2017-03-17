@@ -10,8 +10,14 @@
 // 输出调试坐标信息
 void outPutPos(int nX , int nY);
 
-// 键盘事件处理函数
-void keyEventProc();
+// 键盘事件处理函数 1
+void keyEventProc(KEY_EVENT_RECORD ker);
+
+// 键盘事件处理函数 2
+void keyEventSec();
+
+// 键盘事件处理函数 3
+void keyEvent();
 
 // 鼠标事件处理函数
 void mouseEventProc(MOUSE_EVENT_RECORD mer);

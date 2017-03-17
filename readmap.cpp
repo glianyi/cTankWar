@@ -9,7 +9,8 @@ void readMap(){
 		for(int j = 0; j < MAXMAPWID; j++){
 			if(dftMap[i][j] != 0 || beforMap[i][j] != 0){
 
-				if(beforMap[ i ][ j ] == dftMap[ i ][ j ])
+				if(beforMap[ i ][ j ] == dftMap[ i ][ j ] &&
+				   dftMap[i][j] != 1 && dftMap[i][j] != 2)
 					continue;
 
 				if(beforMap[ i ][ j ] != 0 && dftMap[ i ][ j ] == 0){

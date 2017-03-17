@@ -22,8 +22,19 @@ void moveDtk(){
 	}
 }
 
+// CPU时钟滴答数 - 用于控制敌方坦克和子弹的速度
+long long fireseconds = 0;// 开火判断条件
+
 // 开炮
 void fire(objInfo *theObj){
+	if(seconds - fireseconds < 1500){
+		return;
+	}
+	else{
+		fireseconds = seconds;
+	}
+	
+
 	unshort tp = theObj->Type;
 	unshort x = theObj->ltposX;
 	unshort y = theObj->ltposY;

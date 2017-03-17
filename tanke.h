@@ -5,6 +5,7 @@
 #include <conio.h>
 #include <stdarg.h>
 #include <math.h>
+#include <time.h>
 
 #define MAXMAPWID 40  // 地图宽度
 #define MAXOBJ    255 // 对象数组大小
@@ -55,8 +56,9 @@ extern unshort mapB[ MAXMAPWID ][ MAXMAPWID ];
 
 extern unshort (*beforMap)[40]; // 前一个状态地图
 extern unshort (*dftMap)[40];   // 当前地图
-extern int tanekLife; // 坦克新生无敌时间
+extern int tankLife; // 坦克新生无敌时间
 extern int gameOver;  // 定义游戏是否结束
+extern int dTankNum; //敌军坦克数量
 
 extern hdLink testNull; // 链表测试用例中的空元素链表
 extern hdLink testObj;  // 链表测试用例中的对象链表
@@ -64,3 +66,10 @@ extern hdLink testObj;  // 链表测试用例中的对象链表
 extern hdLink nLink; // 全局对象数组空元素链表
 extern hdLink dTankLink; // 敌方坦克链表
 extern hdLink bulletLink; // 子弹链表
+
+// CPU时钟滴答数 - 用于控制敌方坦克和子弹的速度
+extern long long seconds; // 实时更新
+extern long long bullseconds;// 子弹移动判断条件
+extern long long tankseconds;// 坦克移动判断条件
+extern long long fireseconds;// 开火判断条件
+extern long long keyseconds;// 键盘移动判断条件

@@ -61,6 +61,10 @@ void *delLink(hdLink *head , int wtLink , unshort id){
 	}
 	else{
 		tempA->next = temp->next;
+
+		creatLink(&testNull , NULLARR);
+		testNull.wtObj.nullNext->id = temp->theObj->ID;
+
 		free(temp);
 	}
 	return (void *)0XF000;
@@ -125,8 +129,13 @@ void echoLink(hdLink head , int wtLink){
 
 // 获取对象数组空元素下标
 unint getNullObj(hdLink *head){
+	// 所有元素已分配完
+	if(head->num == MAXOBJ - 1 && head->wtObj.nullNext == NULL)
+		return 0;
+
+	// 顺序分配
 	if(head->wtObj.nullNext == NULL)
-		return (head->num)++;
+		return ((head->num) < MAXOBJ) ? (head->num)++ : 0;
 
 	unint temp = 0;
 	temp = head->wtObj.nullNext->id;

@@ -9,8 +9,8 @@ void outPutPos(int nX , int nY){
 	WriteChar(41 , 0 , szBuff , 0x0A);
 }
 
-// 键盘事件处理函数
-void keyEventProc(){
+// 键盘事件处理函数 3
+void keyEvent(){
 	if(KEYDOWN('w') || KEYDOWN('W')){
 		WriteChar(45 , 3 , "↑" , 0xFA);
 		objMove(allObj[ 1 ] , UP);
@@ -43,11 +43,104 @@ void keyEventProc(){
 		exit(0);
 	}
 
-	WriteChar(45 , 3 , "↑" , 0x0A);
-	WriteChar(45 , 5 , "↓" , 0x0A);
-	WriteChar(44 , 4 , "←" , 0x0A);
-	WriteChar(46 , 4 , "→" , 0x0A);
-	WriteChar(45 , 4 , "○" , 0x0A);
+	if(KEYUP('w') || KEYUP('W')){
+		WriteChar(45 , 3 , "↑" , 0x0A);
+	}
+	if(KEYUP('s') || KEYUP('S')){
+		WriteChar(45 , 5 , "↓" , 0x0A);
+	}
+	if(KEYUP('a') || KEYUP('A')){
+		WriteChar(44 , 4 , "←" , 0x0A);
+	}
+	if(KEYUP('d') || KEYUP('D')){
+		WriteChar(46 , 4 , "→" , 0x0A);
+	}
+	if(KEYUP('h') || KEYUP('H')){
+		WriteChar(45 , 4 , "○" , 0x0A);
+	}
+}
+
+// 键盘事件处理函数 2
+void keyEventSec(){
+	if(_kbhit()){
+		char ch = _getch();
+		switch(ch)
+		{
+			case 'w': case 'W':
+				WriteChar(45 , 3 , "↑" , 0xFA);
+				objMove(allObj[ 1 ] , UP);
+				echoMap(allObj[ 1 ]);
+				break;
+			case 's': case 'S':
+				WriteChar(45 , 5 , "↓" , 0xFA);
+				objMove(allObj[ 1 ] , DOWN);
+				echoMap(allObj[ 1 ]);
+				break;
+			case 'a': case 'A':
+				WriteChar(44 , 4 , "←" , 0xFA);
+				objMove(allObj[ 1 ] , LEFT);
+				echoMap(allObj[ 1 ]);
+				break;
+			case 'd': case 'D':
+				WriteChar(46 , 4 , "→" , 0xFA);
+				objMove(allObj[ 1 ] , RIGHT);
+				echoMap(allObj[ 1 ]);
+				break;
+			case 'h': case 'H':
+				WriteChar(45 , 4 , "●" , 0xFA);
+				fire(allObj[ 1 ]);
+				break;
+			case 'q': case 'Q':
+				clrLink(&nLink , NULLARR);
+				clrLink(&dTankLink , LINKOBJ);
+				clrLink(&bulletLink , LINKOBJ);
+				//fflush(stdin); // 清理输入缓冲区
+				exit(0);
+				break;
+			default:
+				break;
+		}
+	}
+}
+// 键盘事件处理函数 1
+void keyEventProc(KEY_EVENT_RECORD ker){
+	char ch = ker.uChar.AsciiChar;
+	switch(ch)
+	{
+		case 'w': case 'W':
+			WriteChar(45 , 3 , "↑" , 0xFA);
+			objMove(allObj[ 1 ] , UP);
+			echoMap(allObj[1]);
+			break;
+		case 's': case 'S':
+			WriteChar(45 , 5 , "↓" , 0xFA);
+			objMove(allObj[ 1 ] , DOWN);
+			echoMap(allObj[ 1 ]);
+			break;
+		case 'a': case 'A':
+			WriteChar(44 , 4 , "←" , 0xFA);
+			objMove(allObj[ 1 ] , LEFT);
+			echoMap(allObj[ 1 ]);
+			break;
+		case 'd': case 'D':
+			WriteChar(46 , 4 , "→" , 0xFA);
+			objMove(allObj[ 1 ] , RIGHT);
+			echoMap(allObj[ 1 ]);
+			break;
+		case 'h': case 'H':
+			WriteChar(45 , 4 , "●" , 0xFA);
+			fire(allObj[ 1 ]);
+			break;
+		case 'q': case 'Q':
+			clrLink(&nLink , NULLARR);
+			clrLink(&dTankLink , LINKOBJ);
+			clrLink(&bulletLink , LINKOBJ);
+			//fflush(stdin); // 清理输入缓冲区
+			exit(0);
+			break;
+		default:
+			break;
+	}
 }
 
 // 鼠标事件处理函数
@@ -68,42 +161,73 @@ void mouseEventProc(MOUSE_EVENT_RECORD mer){
 	}
 }
 
+// CPU时钟滴答数 - 用于控制敌方坦克和子弹的速度
+long long seconds = 0; // 实时更新
+long long bullseconds = 0;// 子弹移动判断条件
+long long tankseconds = 0;// 坦克移动判断条件
+long long keyseconds = 0;// 键盘移动判断条件
+
 // 消息处理函数
 void messageLoop(){
+	/*
 	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
 	INPUT_RECORD stcRecord = { 0 };
-	//DWORD dwRead;
+	DWORD dwRead;
 	SetConsoleMode(hStdin , ENABLE_MOUSE_INPUT);
+	*/
 
-	WriteChar(41 , 7 , "剩余生命" , 0x0A);
+	WriteChar(41 , 8 , "剩余生命" , 0x0A);
 	char szBuff[ 10 ];
 	sprintf_s(szBuff , 10 , "%2d" , allObj[ 1 ]->Bullft);
-	WriteChar(45 , 7 , szBuff , 0x0A);
+	WriteChar(45 , 8 , szBuff , 0x0A);
 
-	int i = 0;
+	WriteChar(41 , 10 , "敌军数量" , 0x0A);
+	sprintf_s(szBuff , 10 , "%2d" , dTankNum);
+	WriteChar(45 , 10 , szBuff , 0x0A);
+
 	while(1){
-		echoMap();
+		seconds = clock();
+		if(seconds - bullseconds > 100){
+			bullseconds = seconds;
 
- 		moveBul();
-		if(i > 5){
-			i = 0;
+			// 自动移动子弹
+ 			moveBul();
+
+			// 重置按键可视输出
+			WriteChar(45 , 3 , "↑" , 0x0A);
+			WriteChar(45 , 5 , "↓" , 0x0A);
+			WriteChar(44 , 4 , "←" , 0x0A);
+			WriteChar(46 , 4 , "→" , 0x0A);
+			WriteChar(45 , 4 , "○" , 0x0A);
+		}
+		if(seconds - tankseconds > 300){
+			tankseconds = seconds;
+			// 坦克无敌时间
+			if(tankLife > 0){
+				allObj[ 1 ]->color = ((allObj[ 1 ]->color) == 0x0A) ? 0x0D : 0x0A;
+				--tankLife;
+			}
 			// 自动移动坦克
 			moveDtk();
 		}
-		++i;
 
-		// 等待事件
-		//ReadConsoleInput(hStdin , &stcRecord , 1 , &dwRead);
-		// 处理事件
-		// 键盘事件
-		keyEventProc();
-		if(stcRecord.EventType == MOUSE_EVENT){
-			mouseEventProc(stcRecord.Event.MouseEvent);
-		}
+		WriteChar(41 , 12 , "无敌时间" , 0x0A);
+		sprintf_s(szBuff , 10 , "%2d" , tankLife);
+		WriteChar(45 , 12 , szBuff , 0x0A);
+		keyEventSec();
+		echoMap();
+
 		if(gameOver > 0){
-			//fflush(stdin); // 清理输入缓冲区
-			return;
+			//return;
 		}
 		//Sleep(100);
 	}
+/*	while(0){
+		// 等待事件
+		ReadConsoleInput(hStdin , &stcRecord , 1 , &dwRead);
+		// 处理鼠标事件
+		// if(stcRecord.EventType == MOUSE_EVENT){
+			mouseEventProc(stcRecord.Event.MouseEvent);
+		}
+	}*/
 }

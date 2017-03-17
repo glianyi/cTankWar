@@ -36,11 +36,11 @@ objInfo *creatObj(unshort Type , unshort size , unshort Action ,
 			newObj->Bullft = 3;
 			break;
 		case DTANK:
-			newObj->color = 0x04;
+			newObj->color = 0x03;
 			newObj->Bullft = 1;
 			break;
 		case DDTANK:
-			newObj->color = 0x74;
+			newObj->color = 0x09;
 			newObj->Bullft = 2;
 			break;
 		case ZIDAN:
@@ -91,9 +91,9 @@ unshort objId = 0;
 void initDefObj(){
 
 	// 初始化链表元素
-	dTankLink.num = MAXOBJ; // 将此值置为对象数组最大值，防止误用
+	dTankLink.num = 0; // 将此值置为0，防止误用
 	dTankLink.wtObj.objNext = NULL;
-	bulletLink.num = MAXOBJ; // 将此值置为对象数组最大值，防止误用
+	bulletLink.num = 0; // 将此值置为0，防止误用
 	bulletLink.wtObj.objNext = NULL;
 
 
@@ -120,7 +120,10 @@ void initDefObj(){
 	objInfo *homeRightWall = creatObj(ZWALL , 3 , DOWN , 36 , 22 , 9);
 	allObj[ 9 ] = homeRightWall;
 
-	/* 测试 数据开始 */
+ 	nLink.num = 10;
+ 	nLink.wtObj.nullNext = NULL;
+
+	/* 测试 数据开始 
 	// 敌军坦克
 	allObj[ 10 ] = creatObj(DTANK , 1 , DOWN , 15 , 15 , 10);
 	// 河流
@@ -159,7 +162,7 @@ void initDefObj(){
 	bulletLink.wtObj.objNext->theObj = allObj[ 17 ];
 // 	creatLink(&bulletLink , LINKOBJ);
 // 	bulletLink.wtObj.objNext->theObj = allObj[ 18 ];
-	/* 测试 数据结束 */
+	测试 数据结束 */
 }
 
 // 输出新地图

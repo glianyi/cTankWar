@@ -1,7 +1,8 @@
 #include "tanke.h"
 
-int tankeLife = 4;
+int tankLife = 6;
 int gameOver = 0;
+int dTankNum = 10;
 
 // 碰撞检测
 bool collision(objInfo *ob , coor crBuff[]){
@@ -30,19 +31,50 @@ bool collision(objInfo *ob , coor crBuff[]){
 					canMove += 1;
 				}
 				else{
-					tankeOver();
-					return false;
+					//无敌时间
+					if(tankLife > 0){
+						if(tp == DDTANK){
+							// 更改坦克属性
+							(allObj[ ob->ID ]->Type) = DTANK;
+							(allObj[ ob->ID ]->Bullft) -= 1;
+							(allObj[ ob->ID ]->color) = 0x03;
+							// 修改坦克ID （实时更新）
+							unshort tempid = getNullObj(&nLink);
+							allObj[ ob->ID ] = (objInfo *)0xF000;
+							// 将坦克原ID放入空元素链表
+							creatLink(&testNull , NULLARR);
+							testNull.wtObj.nullNext->id = ob->ID;
+							ob->ID = tempid;
+							allObj[ tempid ] = ob;
+						}
+						else{
+							delT(&dTankLink , ob->ID);// 删除敌方坦克对象
+						}
+					}
+					else{
+						tankeOver();
+						return false;
+					}
 				}
 			}
-			// 敌方坦克碰撞我方坦克或子弹
+			// 敌方坦克碰撞子弹或我方坦克
 			if((crTp == TANK || crTp == ZIDAN || crTp == DZIDAN) &&
 			   (tp == DTANK || tp == DDTANK)){
 
 				if(crTp == ZIDAN){
 					if(tp == DDTANK){
+						// 更改坦克属性
 						(allObj[ ob->ID ]->Type) = DTANK;
 						(allObj[ ob->ID ]->Bullft) -= 1;
-						(allObj[ ob->ID ]->color) = 0x04;
+						(allObj[ ob->ID ]->color) = 0x03;
+						// 修改坦克ID （实时更新）
+						unshort tempid = getNullObj(&nLink);
+						allObj[ ob->ID ] = (objInfo *)0xF000;
+						// 将坦克原ID放入空元素链表
+						creatLink(&testNull , NULLARR);
+						testNull.wtObj.nullNext->id = ob->ID;
+						ob->ID = tempid;
+						allObj[ tempid ] = ob;
 					}
 					else{
 						delT(&dTankLink , ob->ID);// 删除敌方坦克对象
@@ -55,7 +87,30 @@ bool collision(objInfo *ob , coor crBuff[]){
 					canMove += 1;
 				}
 				else{
-					tankeOver();
+					//无敌时间
+					if(tankLife > 0){
+						if(tp == DDTANK){
+							// 更改坦克属性
+							(allObj[ ob->ID ]->Type) = DTANK;
+							(allObj[ ob->ID ]->Bullft) -= 1;
+							(allObj[ ob->ID ]->color) = 0x03;
+							// 修改坦克ID （实时更新）
+							unshort tempid = getNullObj(&nLink);
+							allObj[ ob->ID ] = (objInfo *)0xF000;
+							// 将坦克原ID放入空元素链表
+							creatLink(&testNull , NULLARR);
+							testNull.wtObj.nullNext->id = ob->ID;
+							ob->ID = tempid;
+							allObj[ tempid ] = ob;
+						}
+						else{
+							delT(&dTankLink , ob->ID);// 删除敌方坦克对象
+						}
+					}
+					else{
+						tankeOver();
+						return false;
+					}
 				}
 			}
 
@@ -70,9 +125,9 @@ bool collision(objInfo *ob , coor crBuff[]){
 			}
 
 			// 坦克撞墙无需操作，直接不能移动
-			if(crTp == ZWALL || crTp == TWALL || crTp == HELIU){
-				// canMove -= 1;
-			}
+// 			if(crTp == ZWALL || crTp == TWALL || crTp == HELIU){
+// 				// canMove -= 1;
+// 			}
 		}
 	}
 	else{
@@ -80,6 +135,8 @@ bool collision(objInfo *ob , coor crBuff[]){
 		// 目标坐标点无元素
 		if(crTp == 128)
 			return true;
+		else if(crTp == 127)
+			return false;
 
 		// 子弹若无碰撞，则返回真
 		if((tp & crTp) != 0)
@@ -92,7 +149,14 @@ bool collision(objInfo *ob , coor crBuff[]){
 			if(crTp == DDTANK){
 				(allObj[ crId ]->Type) = DTANK;
 				(allObj[ crId ]->Bullft) -= 1;
-				(allObj[ crId ]->color) = 0x04;
+				(allObj[ crId ]->color) = 0x03;
+				unshort tempid = getNullObj(&nLink);
+				objInfo *tempobj = allObj[ crId ];
+				allObj[ tempobj->ID ] = (objInfo *)0xF000;
+				creatLink(&testNull , NULLARR);
+				testNull.wtObj.nullNext->id = tempobj->ID;
+				tempobj->ID = tempid;
+				allObj[ tempid ] = tempobj;
 			}
 			else{
 				delT(&dTankLink , crId);// 删除敌方坦克对象
@@ -101,7 +165,9 @@ bool collision(objInfo *ob , coor crBuff[]){
 
 		// 敌方子弹碰撞我方坦克
 		if(tp == DZIDAN && crTp == TANK){
-			tankeOver();
+			// 无敌时间
+			if(tankLife <= 0)
+				tankeOver();
 		}
 
 		// 子弹相撞
@@ -139,22 +205,32 @@ bool collision(objInfo *ob , coor crBuff[]){
 
 // 我方坦克中弹
 void tankeOver(){
-	if((allObj[1]->Bullft) >= 0)
+	if(tankLife > 0)
+		return;
+
+	if((allObj[ 1 ]->Bullft) >= 0){
 		(allObj[ 1 ]->Bullft) -= 1;
-// 	if(allObj[ 1 ]->Bullft <= 0)
-// 		gameOver += 1;
+	}
+
+	if(allObj[ 1 ]->Bullft <= 0)
+		gameOver += 1;
 
 	char szBuff[ 10 ];
 	sprintf_s(szBuff , 10 , "%2d" , allObj[ 1 ]->Bullft);
-	WriteChar(45 , 7 , szBuff , 0x0A);
+	WriteChar(45 , 8 , szBuff , 0x0A);
 
 	allObj[ 1 ]->Action = UP;
 	allObj[ 1 ]->ltposX = 37;
 	allObj[ 1 ]->ltposY = 25;
+	tankLife = 6;
+	echoTanke(allObj[ 1 ]);
 }
 
 // 通过坐标判断对象类型
 unshort wtType(coor wObj, unshort *crId){
+	if(wObj.x >= MAXMAPWID || wObj.y >= MAXMAPWID)
+		return 127;
+
 	unshort x = wObj.x;
 	unshort y = wObj.y;
 	if(allObj[ dftMap[ x ][ y ] ] != NULL &&
@@ -177,9 +253,19 @@ unshort wtType(coor wObj, unshort *crId){
 }
 
 // 删除坦克、子弹链表元素
-void delT(hdLink *theObj, unshort id){
+void delT(hdLink *theObj , unshort id){
+	if(theObj->wtObj.objNext == NULL)
+		return;
+
+	if(theObj->wtObj.objNext->theObj->Type == DTANK){
+		--dTankNum;
+		char szBuff[ 10 ];
+		sprintf_s(szBuff , 10 , "%2d" , dTankNum);
+		WriteChar(45 , 10 , szBuff , 0x0A);
+	}
+
 	delLink(theObj , LINKOBJ , id);
-	
+
 	if(id == (nLink.num - 1)){
 		nLink.num = id;
 	}
