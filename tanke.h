@@ -10,7 +10,7 @@
 #define MAXMAPWID 40  // 地图宽度
 #define MAXOBJ    255 // 对象数组大小
 
-// 宏定义对象类型
+// 宏定义对象类型 如果两种类型会发生碰撞则相与(&)为0
 #define JIDI    0  // 基地
 #define TANK    1  // 坦克
 #define DTANK   2  // 敌方坦克

@@ -293,9 +293,6 @@ void delT(hdLink *theObj , unshort id){
 		sprintf_s(szBuff , 10 , "%2d" , dTankNum);
 		WriteChar(45 , 10 , szBuff , 0x0A);
 	}
-	else{
-		dftMap[ x ][ y ] = 0;
-	}
 
 }
 
@@ -306,6 +303,8 @@ void clrCanliu(objInfo *theObj){
 	unshort y = theObj->ltposY;
 	unshort act = theObj->Action;
 	dftMap[ x ][ y ] = 0;
+	if(theObj->Type == ZIDAN || theObj->Type == DZIDAN)
+		return;
 	switch(act)
 	{
 		case UP:
