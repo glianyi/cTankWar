@@ -39,5 +39,4 @@ void readMap(){
 	unshort(*temp)[ 40 ] = dftMap;
 	dftMap = beforMap;
 	beforMap = temp;
-	memset(dftMap , 0 , sizeof(mapA));
 }

@@ -18,17 +18,19 @@ void moveDtk(){
 	while(temp != NULL){
 		tempA = temp->next;
 		seconds = clock();
+		if(seconds % 4 == 0)
+			fire(temp->theObj, 1);
 		objMove(temp->theObj, 1 << (seconds % 4));
 		temp = tempA;
 	}
 }
 
 // CPU时钟滴答数 - 用于控制敌方坦克和子弹的速度
-long long fireseconds = 0;// 开火判断条件
 
+long long fireseconds = 0;// 开火判断条件
 // 开炮
-void fire(objInfo *theObj){
-	if(seconds - fireseconds < 500){
+void fire(objInfo *theObj , int flag){
+	if(seconds - fireseconds < 500 && flag == 0){
 		return;
 	}
 	else{

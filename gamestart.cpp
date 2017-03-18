@@ -18,7 +18,11 @@ void echoDefaultObj(){
 	allObj[ 23 ] = creatObj(ZWALL , 3 , DOWN , 18 , 21 , 23);
 	allObj[ 24 ] = creatObj(TWALL , 3 , RIGHT , 29 , 18 , 24);
 	allObj[ 25 ] = creatObj(TWALL , 3 , RIGHT , 30 , 18 , 25);
+	allObj[ 26 ] = creatObj(SENLIN , 18 , RIGHT , 29 , 21 , 26);
+	allObj[ 27 ] = creatObj(SENLIN , 18 , RIGHT , 30 , 21 , 27);
 
+
+	nLink.num = 28;
 }
 
 // 创建第一批敌军

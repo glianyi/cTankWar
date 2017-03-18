@@ -257,7 +257,11 @@ void delT(hdLink *theObj , unshort id){
 	if(theObj->wtObj.objNext == NULL)
 		return;
 	unshort tp = theObj->wtObj.objNext->theObj->Type;
+	unshort x = theObj->wtObj.objNext->theObj->ltposX;
+	unshort y = theObj->wtObj.objNext->theObj->ltposY;
+	unshort act = theObj->wtObj.objNext->theObj->Action;
 
+	clrCanliu(theObj->wtObj.objNext->theObj);
 	delLink(theObj , LINKOBJ , id);
 
 	if(id == (nLink.num - 1)){
@@ -271,14 +275,68 @@ void delT(hdLink *theObj , unshort id){
 	allObj[ id ] = (objInfo *)0xF000;
 
 	if(tp == DTANK){
-		if(dTankNum - 5 > 0){
-			seconds = clock();
-			echoDtank( 2 << (seconds % 2) );
+		if(dTankNum > 0){
+			// 出生地为空则创建新坦克
+			int flag = 1;
+			for(int i = 1; i <= 3; i++){
+				for(int j = 14; j <= 16; j++)
+					if(dftMap[ i ][ j ] != 0)
+						--flag;
+			}
+			if(flag == 1){
+				seconds = clock();
+				echoDtank(2 << (seconds % 2));
+			}
 		}
 		--dTankNum;
 		char szBuff[ 10 ];
 		sprintf_s(szBuff , 10 , "%2d" , dTankNum);
 		WriteChar(45 , 10 , szBuff , 0x0A);
 	}
+	else{
+		dftMap[ x ][ y ] = 0;
+	}
 
+}
+
+
+// 清除残留
+void clrCanliu(objInfo *theObj){
+	unshort x = theObj->ltposX;
+	unshort y = theObj->ltposY;
+	unshort act = theObj->Action;
+	dftMap[ x ][ y ] = 0;
+	switch(act)
+	{
+		case UP:
+			dftMap[ x - 1 ][ y ] = 0;
+			dftMap[ x ][ y - 1 ] = 0;
+			dftMap[ x ][ y + 1 ] = 0;
+			dftMap[ x + 1 ][ y - 1 ] = 0;
+			dftMap[ x + 1 ][ y + 1 ] = 0;
+			break;
+		case DOWN:
+			dftMap[ x + 1 ][ y ] = 0;
+			dftMap[ x ][ y + 1 ] = 0;
+			dftMap[ x ][ y - 1 ] = 0;
+			dftMap[ x - 1 ][ y + 1 ] = 0;
+			dftMap[ x - 1 ][ y - 1 ] = 0;
+			break;
+		case LEFT:
+			dftMap[ x ][ y - 1 ] = 0;
+			dftMap[ x + 1 ][ y ] = 0;
+			dftMap[ x - 1 ][ y ] = 0;
+			dftMap[ x + 1 ][ y + 1 ] = 0;
+			dftMap[ x - 1 ][ y + 1 ] = 0;
+			break;
+		case RIGHT:
+			dftMap[ x ][ y + 1 ] = 0;
+			dftMap[ x - 1 ][ y ] = 0;
+			dftMap[ x + 1 ][ y ] = 0;
+			dftMap[ x - 1 ][ y - 1 ] = 0;
+			dftMap[ x + 1 ][ y - 1 ] = 0;
+
+		default:
+			break;
+	}
 }

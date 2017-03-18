@@ -11,3 +11,6 @@ void tankeOver();
 
 // 删除坦克、子弹链表元素
 void delT(hdLink *theObj , unshort id);
+
+// 清除残留
+void clrCanliu(objInfo *theObj);

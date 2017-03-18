@@ -186,6 +186,8 @@ void messageLoop(){
 	WriteChar(45 , 10 , szBuff , 0x0A);
 
 	while(1){
+
+		echoMap();
 		seconds = clock();
 		if(seconds - tankseconds > 300){
 			tankseconds = seconds;
@@ -211,6 +213,7 @@ void messageLoop(){
 			WriteChar(45 , 4 , "¡ð" , 0x0A);
 			
 			echoMap();
+			memset(dftMap , 0 , sizeof(mapA));
 
 			//echoLink(nLink , NULLARR);
 			//echoLink(bulletLink , LINKOBJ);

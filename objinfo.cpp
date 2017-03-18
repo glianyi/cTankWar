@@ -126,6 +126,8 @@ void initDefObj(){
  	nLink.num = 10;
  	nLink.wtObj.nullNext = NULL;
 
+	echoMap();
+
 	/* 测试 数据开始 
 	// 敌军坦克
 	allObj[ 10 ] = creatObj(DTANK , 1 , DOWN , 15 , 15 , 10);
@@ -251,6 +253,7 @@ void objMove(objInfo *theObj , unshort act){
 				crBuff[ 4 ] = { x + 1 , y - 1 };
 				crBuff[ 5 ] = { x + 1 , y + 1 };
 				if(collision(theObj , crBuff)){
+					clrCanliu(theObj);
 					(theObj->ltposX) -= 1;
 					canMove = true;
 				}
@@ -264,6 +267,7 @@ void objMove(objInfo *theObj , unshort act){
 				crBuff[ 4 ] = { x - 1 , y + 1 };
 				crBuff[ 5 ] = { x - 1 , y - 1 };
 				if(collision(theObj , crBuff)){
+					clrCanliu(theObj);
 					(theObj->ltposX) += 1;
 					canMove = true;
 				}break;
@@ -276,6 +280,7 @@ void objMove(objInfo *theObj , unshort act){
 				crBuff[ 4 ] = { x + 1 , y + 1 };
 				crBuff[ 5 ] = { x - 1 , y + 1 };
 				if(collision(theObj , crBuff)){
+					clrCanliu(theObj);
 					(theObj->ltposY) -= 1;
 					canMove = true;
 				}
@@ -289,6 +294,7 @@ void objMove(objInfo *theObj , unshort act){
 				crBuff[ 4 ] = { x - 1 , y - 1 };
 				crBuff[ 5 ] = { x + 1 , y - 1 };
 				if(collision(theObj , crBuff)){
+					clrCanliu(theObj);
 					(theObj->ltposY) += 1;
 					canMove = true;
 				}
@@ -304,6 +310,7 @@ void objMove(objInfo *theObj , unshort act){
 				x -= 1;
 				crBuff[ 0 ] = { x , y };
 				if(collision(theObj , crBuff)){
+					dftMap[ x+1 ][ y ] = 0;
 					(theObj->ltposX) -= 1;
 					canMove = true;
 				}
@@ -312,6 +319,7 @@ void objMove(objInfo *theObj , unshort act){
 				x += 1;
 				crBuff[ 0 ] = { x , y };
 				if(collision(theObj , crBuff)){
+					dftMap[ x - 1 ][ y ] = 0;
 					(theObj->ltposX) += 1;
 					canMove = true;
 				}break;
@@ -319,6 +327,7 @@ void objMove(objInfo *theObj , unshort act){
 				y -= 1;
 				crBuff[ 0 ] = { x , y };
 				if(collision(theObj , crBuff)){
+					dftMap[ x ][ y + 1 ] = 0;
 					(theObj->ltposY) -= 1;
 					canMove = true;
 				}
@@ -327,6 +336,7 @@ void objMove(objInfo *theObj , unshort act){
 				y += 1;
 				crBuff[ 0 ] = { x , y };
 				if(collision(theObj , crBuff)){
+					dftMap[ x ][ y - 1 ] = 0;
 					(theObj->ltposY) += 1;
 					canMove = true;
 				}

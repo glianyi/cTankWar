@@ -7,4 +7,4 @@ void moveBul();
 void moveDtk();
 
 // ©╙ез
-void fire(objInfo *theObj);
+void fire(objInfo *theObj , int flag = 0);
